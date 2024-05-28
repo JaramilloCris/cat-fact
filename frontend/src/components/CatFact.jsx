@@ -6,6 +6,24 @@ const CatFacts = () => {
   const [catFacts, setCatFacts] = useState([]);
   const [likedFacts, setLikedFacts] = useState([]);
 
+  const fetchLikedFacts = async () => {
+    try {
+      const response = await fetch(`${backendUrl}/user/liked/id`, {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+        },
+      });
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const data = await response.json();
+      setLikedFacts(data);
+    }
+    catch (error) {
+      console.error('Error al obtener los cat facts:', error);
+    }
+  }
+
   useEffect(() => {
     // Obtener los cat facts del backend
     const fetchCatFacts = async () => {
@@ -22,6 +40,7 @@ const CatFacts = () => {
     };
 
     fetchCatFacts();
+    fetchLikedFacts();
   }, []);
 
   const handleLike = async (id) => {
