@@ -20,7 +20,7 @@ async def get_db():
 
 api_router = APIRouter()
 
-@api_router.post("/register/", response_model=schemas.User)
+@api_router.post("/register/")
 async def register_user(user: schemas.UserCreate, db: AsyncSession = Depends(get_db)):
     db_user = await crud.get_user_by_username(db, username=user.username)
     if db_user:
@@ -54,6 +54,13 @@ async def get_liked_cat_facts(token: Annotated[str, Depends(oauth2_scheme)], db:
     cat_fact_ids = [like.cat_fact_id for like in likes]
     cat_facts = await crud.get_cat_facts_by_ids(db=db, cat_fact_ids=cat_fact_ids)
     return cat_facts
+
+@api_router.get("/user/liked/id/", response_model=List[int])
+async def get_liked_cat_fact_ids(token: Annotated[str, Depends(oauth2_scheme)], db: AsyncSession = Depends(get_db)):
+    user = await get_user_by_token(token=token, db=db)
+    likes = await crud.get_liked_cat_facts_by_user(db=db, user_id=user.id)
+    cat_fact_ids = [like.cat_fact_id for like in likes]
+    return cat_fact_ids
 
 @api_router.get("/catfacts/popular/", response_model=List[schemas.CatFact])
 async def get_popular_cat_facts(db: AsyncSession = Depends(get_db)):
