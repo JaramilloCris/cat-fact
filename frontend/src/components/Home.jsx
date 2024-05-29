@@ -6,11 +6,13 @@ const Home = () => {
   const { user, logout } = useAuth();
 
   return (
-    <div className="m-20 mt-10">
-      <h2 className="text-2xl font-bold mb-4">Welcome, {user}!</h2>
-      <button onClick={logout} className="bg-red-500 text-white px-4 py-2 rounded mb-4">
-        Logout
-      </button>
+    <div className="container mt-10 mx-auto p-4">
+      <div class="p-4">
+        <h2 className="text-2xl font-bold mb-4">Welcome, {user}!</h2>
+        <button onClick={logout} className="bg-red-500 text-white px-4 py-2 rounded mb-4">
+          Logout
+        </button>
+      </div>
       <CatFacts />
     </div>
   );
