@@ -19,3 +19,12 @@ El archivo docker-compose.yml define los servicios que componen la aplicación. 
 - backend: Este servicio se encarga del backend en FastApi. Esta construido a partir de una imagen de Docker de python 3.9
 
 - db: Este es el servicio que ejecuta la base de datos. Se construye a partir de una imagen de Docker de postgres que tiene todo lo necesario para ejecutar la base de datos.
+
+## Decisiones de diseño
+
+- Se decidió hacer el formulario de login y registro en uno dado que solo es por username y así simplificarlo.
+
+- Se creó un modelo de CatFact para guardar los facts y un modelo de CatFactLike para ir guardando cada like de cada usuario sobre los Facts y así facilitar las consultas.
+
+- Los datos son consultados e insertados una vez se crea la base de datos para simplificar. Idealmente se podría hacer mediante una migración por alembic
+- Se utilizó docker-compose para generar front back y db para que su instalación y prueba fuera sencillo. Ademas de que es mucho mejor a la hora de desarrollar
