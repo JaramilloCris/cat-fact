@@ -29,7 +29,6 @@ async def like_cat_fact(db: AsyncSession, user_id: int, cat_fact_id: int):
 
 async def unlike_cat_fact(db: AsyncSession, user_id: int, cat_fact_id: int):
     result = await db.execute(select(models.UserCatFactLike).filter(models.UserCatFactLike.user_id == user_id, models.UserCatFactLike.cat_fact_id == cat_fact_id))
-    print(result)
     like = result.scalar_one_or_none()
     if like:
         await db.delete(like)
