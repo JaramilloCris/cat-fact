@@ -47,6 +47,13 @@ async def like_cat_fact(data: dict, token: Annotated[str, Depends(oauth2_scheme)
     like = await crud.like_cat_fact(db=db, user_id=user.id, cat_fact_id=cat_fact_id)
     return like
 
+@api_router.post("/catfact/unlike/")
+async def unlike_cat_fact(data: dict, token: Annotated[str, Depends(oauth2_scheme)], db: AsyncSession = Depends(get_db)):
+    user = await get_user_by_token(token=token, db=db)
+    cat_fact_id = data.get("cat_fact_id")
+    like = await crud.unlike_cat_fact(db=db, user_id=user.id, cat_fact_id=cat_fact_id)
+    return like
+
 @api_router.get("/user/liked/", response_model=List[schemas.CatFact])
 async def get_liked_cat_facts(token: Annotated[str, Depends(oauth2_scheme)], db: AsyncSession = Depends(get_db)):
     user = await get_user_by_token(token=token, db=db)

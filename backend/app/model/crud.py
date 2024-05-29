@@ -27,6 +27,16 @@ async def like_cat_fact(db: AsyncSession, user_id: int, cat_fact_id: int):
     await db.refresh(like)
     return like
 
+async def unlike_cat_fact(db: AsyncSession, user_id: int, cat_fact_id: int):
+    result = await db.execute(select(models.UserCatFactLike).filter(models.UserCatFactLike.user_id == user_id, models.UserCatFactLike.cat_fact_id == cat_fact_id))
+    print(result)
+    like = result.scalar_one_or_none()
+    if like:
+        await db.delete(like)
+        await db.commit()
+        return like
+    return None
+
 async def get_liked_cat_facts_by_user(db: AsyncSession, user_id: int):
     result = await db.execute(select(models.UserCatFactLike).filter(models.UserCatFactLike.user_id == user_id))
     return result.scalars().all()
