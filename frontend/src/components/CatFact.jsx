@@ -45,8 +45,6 @@ const CatFacts = () => {
 
   const handleLike = async (id) => {
     try {
-      // Aquí deberías implementar la lógica para enviar el "like" al backend
-      // Por ejemplo, una solicitud POST a /like-catfact con el id del cat fact
       const response = await fetch(`${backendUrl}/catfact/like`, {
         method: 'POST',
         headers: {
@@ -73,6 +71,28 @@ const CatFacts = () => {
     }
   };
 
+  const handleUnlike = async (id) => {
+    try {
+      const response = await fetch(`${backendUrl}/catfact/unlike`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+        },
+        body: JSON.stringify({ cat_fact_id: id }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      // Actualizar el estado local para reflejar el unlike
+      setLikedFacts((prevLikedFacts) => prevLikedFacts.filter((factId) => factId !== id));
+    } catch (error) {
+      console.error('Error al dar unlike al cat fact:', error);
+    }
+  }
+
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-3xl font-bold mb-4">Cat Facts</h1>
@@ -81,7 +101,13 @@ const CatFacts = () => {
           <li key={fact.id} className="bg-white shadow-md rounded-lg p-4">
             <p className="text-lg">{fact.fact}</p>
             <button
-              onClick={() => handleLike(fact.id)}
+              onClick={() => {
+                if (likedFacts.includes(fact.id)) {
+                  handleUnlike(fact.id);
+                } else {
+                  handleLike(fact.id);
+                }
+              }}
               className={`mt-2 px-4 py-2 rounded ${
                 likedFacts.includes(fact.id) ? 'bg-blue-500 text-white' : 'bg-gray-200'
               }`}
