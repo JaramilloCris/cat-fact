@@ -4,6 +4,16 @@
 
 Proyecto web que se basa en CatFact, una API que entrega mensajes relacionados con gatos. En este un usuario se puede registrar a partir de su nombre, ver cat-fact, darle likes y visualizar distintas opciones a partir de esto
 
+## Herramientas utilizadas
+
+- Para el backend se utilizó FastAPI junto a SqlAlchemy para el manejo de base de datos junto al uso de un crud asíncrono.
+
+- El frontend se utilizó React junto a tailwind css para el mejor manejo de clases de CSS.
+
+- Para base de datos de utilizó postgresql
+
+- El manejo de usuario se hace mediante jwt
+
 ## Pasos de instalación
 - Clona el repositorio en tu máquina local utilizando git clone.
 - Navega hasta el directorio del proyecto.
